@@ -1,4 +1,4 @@
-package main.java.cipher.model;
+package cipher.model;
 
 public class Candidate {
 }

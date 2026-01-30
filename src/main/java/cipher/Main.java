@@ -1,13 +1,37 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+package cipher;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+
+import cipher.logic.CipherEngine;
+import cipher.model.CircularGraph;
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("=== 1. Initialization ===");
+
+
+        CircularGraph secretKey = CircularGraph.createRandom();
+        System.out.println("Generated Key (The Graph): " + secretKey.getKey());
+
+
+        CipherEngine engine = new CipherEngine(secretKey);
+
+        System.out.println("\n=== 2. Encryption Test ===");
+        String originalText = "HELLO WORLD";
+        System.out.println("Original Text:  " + originalText);
+
+
+        String encryptedText = engine.encrypt(originalText);
+        System.out.println("Encrypted Text: " + encryptedText);
+
+        System.out.println("\n=== 3. Decryption Test ===");
+
+        String decryptedText = engine.decrypt(encryptedText);
+        System.out.println("Decrypted Text: " + decryptedText);
+
+
+        if ("HELLOWORLD".equals(decryptedText)) {
+            System.out.println("\n SUCCESS: The system works correctly!");
+        } else {
+            System.out.println("\n ERROR: Something went wrong.");
+        }
     }
 }

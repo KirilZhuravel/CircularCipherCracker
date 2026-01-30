@@ -1,6 +1,6 @@
-package main.java.cipher.logic;
+package cipher.logic;
 
-import main.java.cipher.model.CircularGraph;
+import cipher.model.CircularGraph;
 
 public class CipherEngine {
 

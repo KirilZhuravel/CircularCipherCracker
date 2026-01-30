@@ -1,4 +1,4 @@
-package main.java.cipher.logic;
+package cipher.logic;
 
 public class BruteForceCracker {
 }

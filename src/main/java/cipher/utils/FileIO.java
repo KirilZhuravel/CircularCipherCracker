@@ -1,4 +1,4 @@
-package main.java.cipher.utils;
+package cipher.utils;
 
 public class FileIO {
 }

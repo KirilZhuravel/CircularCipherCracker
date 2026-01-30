@@ -1,4 +1,4 @@
-package main.java.cipher.model;
+package cipher.model;
 
 import java.util.Collections;
 import java.util.List;
