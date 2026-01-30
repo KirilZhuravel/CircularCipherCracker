@@ -1,0 +1,22 @@
+### IntelliJ IDEA & Java ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+target/
+build/
+*.class
+
+data/
+*.dat
+*.db
+*.bin
+*.log
+
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+*.swp
+*~
