@@ -1,37 +1,28 @@
 package cipher;
 
+import cipher.logic.FitnessCalculator;
 
-import cipher.logic.CipherEngine;
-import cipher.model.CircularGraph;
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== 1. Initialization ===");
+        FitnessCalculator calculator = new FitnessCalculator();
 
+        String englishText = "The quick brown fox jumps over the lazy dog";
+        double scoreEnglish = calculator.calculateScore(englishText);
 
-        CircularGraph secretKey = CircularGraph.createRandom();
-        System.out.println("Generated Key (The Graph): " + secretKey.getKey());
+        String gibberishText = "XQKZ JWYM PVLA RBMQ ZOPL";
+        double scoreGibberish = calculator.calculateScore(gibberishText);
 
+        System.out.println("=== Heuristic Analysis Test ===");
+        System.out.println("Text 1 (English): " + englishText);
+        System.out.println("Score 1 (Error):  " + scoreEnglish);
 
-        CipherEngine engine = new CipherEngine(secretKey);
+        System.out.println("\nText 2 (Gibberish): " + gibberishText);
+        System.out.println("Score 2 (Error):    " + scoreGibberish);
 
-        System.out.println("\n=== 2. Encryption Test ===");
-        String originalText = "HELLO WORLD";
-        System.out.println("Original Text:  " + originalText);
-
-
-        String encryptedText = engine.encrypt(originalText);
-        System.out.println("Encrypted Text: " + encryptedText);
-
-        System.out.println("\n=== 3. Decryption Test ===");
-
-        String decryptedText = engine.decrypt(encryptedText);
-        System.out.println("Decrypted Text: " + decryptedText);
-
-
-        if ("HELLOWORLD".equals(decryptedText)) {
-            System.out.println("\n SUCCESS: The system works correctly!");
+        if (scoreEnglish < scoreGibberish) {
+            System.out.println("\nSUCCESS: Algorithm correctly identified English text.");
         } else {
-            System.out.println("\n ERROR: Something went wrong.");
+            System.out.println("\nFAIL: Algorithm is confused.");
         }
     }
 }
