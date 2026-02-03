@@ -1,28 +1,36 @@
 package cipher;
 
-import cipher.logic.FitnessCalculator;
+import cipher.logic.BruteForceCracker;
+import cipher.logic.CipherEngine;
+import cipher.model.CircularGraph;
 
 public class Main {
     public static void main(String[] args) {
-        FitnessCalculator calculator = new FitnessCalculator();
+        CircularGraph secretKey = CircularGraph.createRandom();
+        String originalText = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG";
 
-        String englishText = "The quick brown fox jumps over the lazy dog";
-        double scoreEnglish = calculator.calculateScore(englishText);
+        System.out.println("=== 1. Setup ===");
+        System.out.println("Secret Key: " + secretKey.getKey());
+        System.out.println("Original:   " + originalText);
 
-        String gibberishText = "XQKZ JWYM PVLA RBMQ ZOPL";
-        double scoreGibberish = calculator.calculateScore(gibberishText);
+        CipherEngine engine = new CipherEngine(secretKey);
+        String ciphertext = engine.encrypt(originalText);
+        System.out.println("Ciphertext: " + ciphertext);
 
-        System.out.println("=== Heuristic Analysis Test ===");
-        System.out.println("Text 1 (English): " + englishText);
-        System.out.println("Score 1 (Error):  " + scoreEnglish);
+        System.out.println("\n=== 2. Starting Attack ===");
+        BruteForceCracker cracker = new BruteForceCracker();
 
-        System.out.println("\nText 2 (Gibberish): " + gibberishText);
-        System.out.println("Score 2 (Error):    " + scoreGibberish);
+        CircularGraph hackedKey = cracker.solve(ciphertext, 5000);
 
-        if (scoreEnglish < scoreGibberish) {
-            System.out.println("\nSUCCESS: Algorithm correctly identified English text.");
+        if (hackedKey != null) {
+            CipherEngine hackedEngine = new CipherEngine(hackedKey);
+            String result = hackedEngine.decrypt(ciphertext);
+
+            System.out.println("\n=== Result ===");
+            System.out.println("Best Key Found: " + hackedKey.getKey());
+            System.out.println("Decrypted Text: " + result);
         } else {
-            System.out.println("\nFAIL: Algorithm is confused.");
+            System.out.println("\nFailed to find any key.");
         }
     }
 }
