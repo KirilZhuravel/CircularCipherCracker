@@ -1,4 +1,4 @@
-package main.java.cipher.gui;
+package cipher.gui;
 
 public class MainWindow {
 }
