@@ -1,36 +1,42 @@
 package cipher;
 
-import cipher.logic.BruteForceCracker;
-import cipher.logic.CipherEngine;
-import cipher.model.CircularGraph;
+import cipher.logic.RainbowTableManager;
 
 public class Main {
     public static void main(String[] args) {
-        CircularGraph secretKey = CircularGraph.createRandom();
-        String originalText = "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG";
+        System.out.println("=== Stage 4: Infrastructure Test ===");
 
-        System.out.println("=== 1. Setup ===");
-        System.out.println("Secret Key: " + secretKey.getKey());
-        System.out.println("Original:   " + originalText);
+        RainbowTableManager manager = new RainbowTableManager();
 
-        CipherEngine engine = new CipherEngine(secretKey);
-        String ciphertext = engine.encrypt(originalText);
-        System.out.println("Ciphertext: " + ciphertext);
 
-        System.out.println("\n=== 2. Starting Attack ===");
-        BruteForceCracker cracker = new BruteForceCracker();
+        System.out.println("\n--- Step 1: Initial Load ---");
+        manager.loadTable();
+        System.out.println("Current Size: " + manager.getSize());
 
-        CircularGraph hackedKey = cracker.solve(ciphertext, 5000);
 
-        if (hackedKey != null) {
-            CipherEngine hackedEngine = new CipherEngine(hackedKey);
-            String result = hackedEngine.decrypt(ciphertext);
+        System.out.println("\n--- Step 2: Adding Dummy Data ---");
+        manager.addDummyEntry("AAAAA", "ZZZZZ");
+        manager.addDummyEntry("BBBBB", "YYYYY");
+        System.out.println("Added 2 entries.");
 
-            System.out.println("\n=== Result ===");
-            System.out.println("Best Key Found: " + hackedKey.getKey());
-            System.out.println("Decrypted Text: " + result);
+
+        System.out.println("\n--- Step 3: Saving ---");
+        manager.saveTable();
+
+
+        System.out.println("\n--- Step 4: Clearing Memory ---");
+        manager.clearTable();
+        System.out.println("Size after clear: " + manager.getSize());
+
+
+        System.out.println("\n--- Step 5: Reloading ---");
+        manager.loadTable();
+        System.out.println("Final Size: " + manager.getSize());
+
+        if (manager.getSize() == 2) {
+            System.out.println("\n✅ SUCCESS: Infrastructure is ready for Stage 5!");
         } else {
-            System.out.println("\nFailed to find any key.");
+            System.out.println("\n❌ ERROR: Persistence failed.");
         }
     }
 }
